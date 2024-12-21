@@ -3,7 +3,7 @@ import os
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox
 from PyQt5.uic import loadUi
 from PIL import Image
-import HW2_Q1
+import HW2_Q2
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
 class Main_UI(QMainWindow):
@@ -19,7 +19,7 @@ class Main_UI(QMainWindow):
         self.loss="./vgg19_bn_loss.png"
         self.loadFiles=""
         self.img_path=""
-        HW2_Q1.initial(self)
+        HW2_Q2.initial(self)
         self.Connect_btn()
 
 
@@ -80,12 +80,13 @@ class Main_UI(QMainWindow):
         HW2_Q1.show_inference(self)
         '''
     def pushButton6F(self):
-        
+        HW2_Q2.show_augmentation(self.files,self.transform)
     def pushButton7F(self):
-        
+        HW2_Q2.show_structure(self.model)
     def pushButton8F(self):
-        
+        HW2_Q2.show_loss(self.loss)
     def pushButton9F(self):
+        HW2_Q2.show_product_image()
         
 
 if __name__ == "__main__":
