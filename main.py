@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox
 from PyQt5.uic import loadUi
 from PIL import Image
 import HW2_Q2
+from modelGD import Discriminator, Generator
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
 class Main_UI(QMainWindow):
@@ -11,28 +12,29 @@ class Main_UI(QMainWindow):
         super(Main_UI,self).__init__(parent)
         loadUi("./HW2.ui",self)
         self.device=None
-        self.model=None
+        self.Gmodel=None
+        self.Dmodel=None
         self.transform=None
+        self.Data_loader=None
+        self.n_Data_loader=None
         self.files=[]
-        self.labels=['airplane', 'automobile', 'bird', 'cat','deer', 'dog', 'frog', 'horse', 'ship', 'truck']
-        self.acc="./vgg19_bn_acc.png"
-        self.loss="./vgg19_bn_loss.png"
-        self.loadFiles=""
-        self.img_path=""
+        self.loss="./loss_ver3.png"
+        self.loadFiles=r"D:\CPJ\courses\1131\CvDL\Q2_images\mnist"
+        self.result_img="./real_fake_ver3.png"
         HW2_Q2.initial(self)
         self.Connect_btn()
 
 
     def Connect_btn(self):
-        self.pushButton.clicked.connect(self.showMessage_wrong_btn)           #load file
-        self.pushButton_2.clicked.connect(self.showMessage_wrong_btn)         #1. Show Augmented Images
-        self.pushButton_3.clicked.connect(self.showMessage_wrong_btn)         #2. Show Model Structure
-        self.pushButton_4.clicked.connect(self.showMessage_wrong_btn)         #3. Show Accuracy and Loss
-        self.pushButton_5.clicked.connect(self.showMessage_wrong_btn)         #4. Inference
-        self.pushButton_6.clicked.connect(self.pushButton6F)         #1. Show Training Images
-        self.pushButton_7.clicked.connect(self.pushButton7F)         #2. Show Model Structure
-        self.pushButton_8.clicked.connect(self.pushButton8F)         #3. Show Training Loss
-        self.pushButton_9.clicked.connect(self.pushButton9F)    #4. Inference
+        self.pushButton.clicked.connect(self.showMessage_wrong_btn)           
+        self.pushButton_2.clicked.connect(self.showMessage_wrong_btn)         
+        self.pushButton_3.clicked.connect(self.showMessage_wrong_btn)         
+        self.pushButton_4.clicked.connect(self.showMessage_wrong_btn)         
+        self.pushButton_5.clicked.connect(self.showMessage_wrong_btn)         
+        self.pushButton_6.clicked.connect(self.pushButton6F)        
+        self.pushButton_7.clicked.connect(self.pushButton7F)        
+        self.pushButton_8.clicked.connect(self.pushButton8F)        
+        self.pushButton_9.clicked.connect(self.pushButton9F)   
 
     
     def showMessage_wrong_btn(self):
@@ -42,51 +44,15 @@ class Main_UI(QMainWindow):
         msg.setIcon(QMessageBox.Information)
         msg.setStandardButtons(QMessageBox.Ok)
         msg.exec_()
-    '''
-    def pushButton1F(self):
-        img_path, _  = QFileDialog.getOpenFileName(self, "Select Image")
-        #QFileDialog.getOpenFileName 返回的是一個元組 (file_path, file_filter)，其中 file_path 是選擇的文件的完整路徑，而 file_filter 是文件選擇框的過濾器（例如 *.png 或 *.jpg）。
-        if not img_path:
-            QMessageBox.warning(self, "操作錯誤提示", "請重新選擇影像")
-        else:
-            self.img_path = img_path  
-            print("Selected image:", self.img_path) 
-            
-    def pushButton2F(self):
-        folder_path = QFileDialog.getExistingDirectory(self, "Select Folder")
-        augmentation_labels=[]
-        if not folder_path:
-            QMessageBox.warning(self, "操作錯誤提示", "請重新選擇資料夾")
-        else:
-            self.loadFiles = folder_path  
-            print("Selected folder:", self.loadFiles)  
-            
-            for file_name in sorted(os.listdir(self.loadFiles)):
-                if file_name.endswith(".png"):
-                    self.files.append(os.path.join(self.loadFiles, file_name))
-                    print(file_name)
-                    label=os.path.splitext(file_name)[0]
-                    print(label)
-                    augmentation_labels.append(label)
-        HW2_Q1.show_augmentation(self.files,augmentation_labels,self.transform)
-        
-    def pushButton3F(self):
-        HW2_Q1.show_structure(self.model)
 
-    def pushButton4F(self):
-        HW2_Q1.show_loss_acc(self.acc,self.loss)
-        
-    def pushButton5F(self):
-        HW2_Q1.show_inference(self)
-        '''
     def pushButton6F(self):
-        HW2_Q2.show_augmentation(self.files,self.transform)
+        HW2_Q2.show_augmentation(self)
     def pushButton7F(self):
-        HW2_Q2.show_structure(self.model)
+        HW2_Q2.show_structure(self.Gmodel,self.Dmodel)
     def pushButton8F(self):
         HW2_Q2.show_loss(self.loss)
     def pushButton9F(self):
-        HW2_Q2.show_product_image()
+        HW2_Q2.show_product_image(self)
         
 
 if __name__ == "__main__":
