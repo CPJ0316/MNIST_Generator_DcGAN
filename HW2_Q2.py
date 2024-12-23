@@ -12,8 +12,8 @@ import torchvision.utils as vutils
 
 def initial(self):
     self.device=torch.device('cpu')
-    self.Gmodel=torch.load("./netG.pth", map_location=self.device)
-    self.Dmodel=torch.load("./netD.pth", map_location=self.device)
+    self.Gmodel=torch.load("./netG_ver5.pth", map_location=self.device)
+    self.Dmodel=torch.load("./netD_ver5.pth", map_location=self.device)
     self.data_transforms =transforms.Compose([
         transforms.Resize((64, 64)),
         transforms.ColorJitter(contrast=(1.2, 1.5)),

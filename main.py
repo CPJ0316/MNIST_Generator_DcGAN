@@ -18,9 +18,9 @@ class Main_UI(QMainWindow):
         self.Data_loader=None
         self.n_Data_loader=None
         self.files=[]
-        self.loss="./loss_ver3.png"
+        self.loss="./loss_ver5.png"
         self.loadFiles=r"D:\CPJ\courses\1131\CvDL\Q2_images\mnist"
-        self.result_img="./real_fake_ver3.png"
+        self.result_img="./real_fake_ver5.png"
         HW2_Q2.initial(self)
         self.Connect_btn()
 
